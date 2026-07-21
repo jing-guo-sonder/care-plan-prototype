@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Back Pain Recovery - Interactive Prototype</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:wght@500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+            background: #e5e5e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .device-frame {
+            width: 393px;
+            height: 844px;
+            background: #f8f8f2;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #2d2d2d;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #f8f8f2;
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+
+        .close-button {
+            position: absolute;
+            top: 24px;
+            right: 16px;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            color: #000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 400;
+            z-index: 10;
+            box-shadow: 0px 8px 40px rgba(0,0,0,0.12);
+        }
+
+        .header-section {
+            padding: 56px 16px 32px;
+        }
+
+        .in-progress-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 999px;
+            font-size: 14px;
+            color: #000;
+            font-weight: 510;
+            margin-bottom: 12px;
+        }
+
+        .in-progress-badge::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #34C759;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-family: 'Lora', serif;
+            font-size: 32px;
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .created-by {
+            font-size: 14px;
+            color: #6d6d6d;
+            font-weight: 510;
+            line-height: 1.4;
+        }
+
+        .section {
+            padding: 0 16px;
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-family: 'Lora', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #282828;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .concern-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 15px 16px;
+            display: flex;
+            gap: 12px;
+            box-shadow: 0px 3px 7px rgba(40, 70, 150, 0.07);
+        }
+
+        .concern-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: #000;
+        }
+
+        .concern-text {
+            font-size: 16px;
+            color: #000;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .next-steps-simple {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .next-step-simple-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 16px;
+            box-shadow: 0px 3px 7px rgba(40, 70, 150, 0.07);
+        }
+
+        .next-step-simple-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .next-step-icon {
+            width: 24px;
+            height: 24px;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .next-step-simple-title {
+            font-size: 18px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .appointment-details {
+            background: #f8f8f8;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .appointment-name {
+            font-size: 16px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .appointment-datetime {
+            font-size: 15px;
+            font-weight: 400;
+            color: #000;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .appointment-address {
+            font-size: 15px;
+            font-weight: 400;
+            color: #6d6d6d;
+            line-height: 1.4;
+        }
+
+        .appointment-description {
+            font-size: 15px;
+            font-weight: 400;
+            color: #282828;
+            line-height: 1.4;
+        }
+
+        .view-more-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        .view-more-text {
+            font-size: 15px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.33;
+        }
+
+        .view-more-icon {
+            width: 24px;
+            height: 24px;
+            color: #000;
+            transition: transform 0.2s;
+        }
+
+        .next-step-simple-card.expanded .view-more-icon {
+            transform: rotate(180deg);
+        }
+
+        .appointment-description-full {
+            display: none;
+        }
+
+        .next-step-simple-card.expanded .appointment-description-full {
+            display: block;
+        }
+
+        .next-step-simple-card.expanded .appointment-description {
+            display: none;
+        }
+
+        .mental-health-description {
+            font-size: 15px;
+            font-weight: 400;
+            color: #000;
+            line-height: 1.47;
+            margin-bottom: 16px;
+        }
+
+        .check-in-button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 14px;
+            background: #325aea;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 450;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .check-in-button:hover {
+            background: #2849c9;
+        }
+
+        .tab-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .tab-switcher {
+            display: flex;
+            gap: 4px;
+            background: #e1e1dc;
+            border-radius: 999px;
+            padding: 4px;
+        }
+
+        .tab {
+            padding: 4px 12px;
+            font-size: 14px;
+            color: #636362;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: all 0.2s;
+            font-weight: 510;
+            line-height: 1.4;
+        }
+
+        .tab.active {
+            background: white;
+            color: #000;
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .day-button {
+            padding: 8px 12px;
+            background: white;
+            border: none;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 510;
+            color: #000;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .day-button.active {
+            background: #325bea;
+            color: white;
+            font-weight: 590;
+        }
+
+        .self-care-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .self-care-item {
+            background: #fff;
+            border-radius: 20px;
+            padding: 15px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0px 3px 7px rgba(40, 70, 150, 0.07);
+        }
+
+        .self-care-item.day-view {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .self-care-checkbox-day {
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid #d1d1d6;
+            background: white;
+            border-radius: 6px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .self-care-item.checked .self-care-checkbox-day {
+            background: #5B7FFF;
+            border-color: #5B7FFF;
+        }
+
+        .self-care-checkbox-day::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .self-care-item.checked .self-care-checkbox-day::after {
+            opacity: 1;
+        }
+
+        .self-care-content-wrapper {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+        }
+
+        .self-care-main {
+            flex: 1;
+        }
+
+        .self-care-title {
+            font-size: 16px;
+            color: #000;
+            font-weight: 510;
+            line-height: 1.27;
+            margin-bottom: 8px;
+        }
+
+        .self-care-meta {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 13px;
+        }
+
+        .meta-tag {
+            padding: 3px 9px;
+            background: #eff2fb;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #636362;
+            font-weight: 400;
+            line-height: 1.38;
+        }
+
+        .progress-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding-top: 13px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #f2f6ff;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #325aea;
+            border-radius: 6px;
+            transition: width 0.3s;
+        }
+
+        .progress-label {
+            font-size: 11.5px;
+            color: #6d6d6d;
+            font-weight: 510;
+            white-space: nowrap;
+        }
+
+        .self-care-image {
+            width: 64px;
+            height: 64px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="%23e8eaf6" rx="12"/></svg>');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .self-care-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=200&h=200&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+        }
+
+        .self-care-image::after {
+            content: '▶';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #333;
+            z-index: 1;
+        }
+
+        .medication-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0px 3px 7px rgba(40, 70, 150, 0.07);
+        }
+
+        .medication-card.collapsed .medication-details {
+            display: none;
+        }
+
+        .medication-header {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .medication-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: #000;
+        }
+
+        .medication-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .medication-title {
+            font-size: 16px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .medication-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .medication-divider {
+            height: 1px;
+            background: #e5e5e5;
+        }
+
+        .medication-text {
+            font-size: 14px;
+            color: #000;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .medication-text strong {
+            font-weight: 590;
+        }
+
+        .medication-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            color: #000;
+        }
+
+        .resource-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 15px 16px;
+            display: flex;
+            gap: 13px;
+            align-items: center;
+            box-shadow: 0px 3px 14px rgba(40, 70, 150, 0.07);
+        }
+
+        .resource-content {
+            flex: 1;
+        }
+
+        .resource-title {
+            font-size: 15px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.33;
+            margin-bottom: 2px;
+        }
+
+        .resource-subtitle {
+            font-size: 13px;
+            color: #000;
+            line-height: 1.38;
+            font-weight: 400;
+        }
+
+        .resource-icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: #edede7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .resource-icon {
+            width: 24px;
+            height: 24px;
+            color: #000;
+        }
+
+        .help-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px 16px;
+            box-shadow: 0px 3px 7px rgba(40, 70, 150, 0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .help-section-item {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .help-header-row {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .help-header-row.emergency-row {
+            gap: 16px;
+        }
+
+        .help-header-row.contact-row {
+            gap: 12px;
+        }
+
+        .help-icon-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            padding: 8px;
+        }
+
+        .help-icon-badge.emergency {
+            background: #c51d28;
+        }
+
+        .help-icon-badge.contact {
+            background: #f2a618;
+        }
+
+        .help-icon-badge i {
+            width: 18px !important;
+            height: 18px !important;
+            color: white !important;
+            stroke: white !important;
+            stroke-width: 2 !important;
+        }
+
+        .help-content {
+            flex: 1;
+        }
+
+        .help-title {
+            font-size: 17px;
+            font-weight: 590;
+            color: #000;
+            line-height: 1.41;
+        }
+
+        .help-title.large {
+            font-size: 17px;
+            line-height: 1.41;
+        }
+
+        .help-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .help-divider {
+            height: 1px;
+            background: #e5e5e5;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #000;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .help-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .help-toggle i {
+            width: 24px;
+            height: 24px;
+        }
+
+        .help-section-item.collapsed .help-details {
+            display: none;
+        }
+
+        .help-description {
+            font-size: 14px;
+            color: #000;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .help-actions {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .help-action-button {
+            flex: 1;
+            height: 40px;
+            border: 1.5px solid #282828;
+            border-radius: 20px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 450;
+            color: #000;
+            transition: all 0.2s;
+        }
+
+        .help-action-button:hover {
+            background: #f8f8f8;
+        }
+
+        .help-action-button i {
+            width: 20px;
+            height: 20px;
+            color: #000;
+            stroke-width: 2;
+        }
+
+        .help-action-button i[data-lucide="message-circle-more"] {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="device-frame">
+        <div class="content-wrapper">
+            <button class="close-button">
+                <i data-lucide="x" width="24" height="24"></i>
+            </button>
+
+            <div class="header-section">
+                <div class="in-progress-badge">In progress</div>
+                <h1>Back pain recovery</h1>
+                <div class="created-by">Created by Nurse Anna · 4 Jun, 2026</div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Your concern</div>
+                <div class="concern-card">
+                    <i data-lucide="message-circle-more" class="concern-icon"></i>
+                    <div class="concern-text">I hurt my back from moving heavy boxes. I'm having trouble moving my upper body without pain.</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Next steps</div>
+                <div class="next-steps-simple">
+                    <div class="next-step-simple-card" id="physio-card">
+                        <div class="next-step-simple-header">
+                            <i data-lucide="calendar-check" width="24" height="24" class="next-step-icon"></i>
+                            <div class="next-step-simple-title">Consult with Physio</div>
+                        </div>
+                        <div class="appointment-details">
+                            <div class="appointment-name">One Tree Hill Physiotherapy</div>
+                            <div class="appointment-datetime">4 July at 4pm</div>
+                            <div class="appointment-address">123 George st. Surry Hills, NSW 2041</div>
+                        </div>
+                        <div class="appointment-description">
+                            Appointment scheduled with Physio for clinical assessment of a tendon injury. A medical certificate or work capacity ...
+                        </div>
+                        <div class="appointment-description-full">
+                            Appointment scheduled with Physio for clinical assessment of a tendon injury. A medical certificate or work capacity certificate was recommended to cover missed shifts or formalise modified duties, as light admin tasks and computer mouse usage continued to aggravate the injury site. The physiotherapist will assess your range of motion and develop a personalized treatment plan. Please bring any previous medical records related to this injury.
+                        </div>
+                        <div class="view-more-link" id="view-more-toggle">
+                            <span class="view-more-text">View more</span>
+                            <i data-lucide="chevron-down" class="view-more-icon" width="24" height="24" stroke-width="2"></i>
+                        </div>
+                    </div>
+
+                    <div class="next-step-simple-card">
+                        <div class="next-step-simple-header">
+                            <i data-lucide="clipboard-pen" width="24" height="24" class="next-step-icon"></i>
+                            <div class="next-step-simple-title">Mental health check-in</div>
+                        </div>
+                        <div class="mental-health-description">
+                            Mental health and physical injuries are often linked. Your wellbeing is important to us. Quickly check-in to see how you are doing.
+                        </div>
+                        <button class="check-in-button">Check in</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="tab-container">
+                    <div class="section-title" style="margin-bottom: 0;">Self care</div>
+                    <div class="tab-switcher">
+                        <div class="tab" data-view="summary">Summary</div>
+                        <div class="tab active" data-view="day">Day</div>
+                    </div>
+                </div>
+
+                <div class="day-selector">
+                    <button class="day-button">Tue 31/6</button>
+                    <button class="day-button">Wed 1/7</button>
+                    <button class="day-button">Yesterday</button>
+                    <button class="day-button active">Today</button>
+                </div>
+
+                <div class="self-care-list" id="self-care-summary" style="display: none;">
+                    <div class="self-care-item">
+                        <div class="self-care-content-wrapper">
+                            <div class="self-care-main">
+                                <div class="self-care-title">Avoid heavy lifting (over 5kg)</div>
+                                <div class="self-care-meta">
+                                    <span class="meta-tag">Daily</span>
+                                    <span class="meta-tag">Next 2 weeks</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <div class="progress-label">25% complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item">
+                        <div class="self-care-content-wrapper">
+                            <div class="self-care-main">
+                                <div class="self-care-title">Apply ice pack for 15-20 minutes</div>
+                                <div class="self-care-meta">
+                                    <span class="meta-tag">3x daily</span>
+                                    <span class="meta-tag">Next 2 weeks</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <div class="progress-label">25% complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item">
+                        <div class="self-care-content-wrapper">
+                            <div class="self-care-main">
+                                <div class="self-care-title">Sleep with pillow support under the affected area</div>
+                                <div class="self-care-meta">
+                                    <span class="meta-tag">Daily</span>
+                                    <span class="meta-tag">Next 4 weeks</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <div class="progress-label">25% complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item">
+                        <div class="self-care-content-wrapper">
+                            <div class="self-care-main">
+                                <div class="self-care-title">Practice physiotherapy exercises</div>
+                                <div class="self-care-meta">
+                                    <span class="meta-tag">Daily</span>
+                                    <span class="meta-tag">Next 2 weeks</span>
+                                </div>
+                                <div class="progress-wrapper">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 35%"></div>
+                                    </div>
+                                    <div class="progress-label">25% complete</div>
+                                </div>
+                            </div>
+                            <div class="self-care-image"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="self-care-list" id="self-care-day">
+                    <div class="self-care-item day-view">
+                        <div class="self-care-checkbox-day"></div>
+                        <div class="self-care-main">
+                            <div class="self-care-title">Avoid heavy lifting (over 5kg)</div>
+                            <div class="self-care-meta">
+                                <span class="meta-tag">Daily</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item day-view checked">
+                        <div class="self-care-checkbox-day"></div>
+                        <div class="self-care-main">
+                            <div class="self-care-title">Apply ice pack for 15-20 minutes</div>
+                            <div class="self-care-meta">
+                                <span class="meta-tag">3x daily</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item day-view checked">
+                        <div class="self-care-checkbox-day"></div>
+                        <div class="self-care-main">
+                            <div class="self-care-title">Sleep with pillow support under the affected area</div>
+                            <div class="self-care-meta">
+                                <span class="meta-tag">Daily</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="self-care-item day-view">
+                        <div class="self-care-checkbox-day"></div>
+                        <div class="self-care-main">
+                            <div class="self-care-title">Practice physiotherapy exercises</div>
+                            <div class="self-care-meta">
+                                <span class="meta-tag">Daily</span>
+                            </div>
+                        </div>
+                        <div class="self-care-image"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Medication</div>
+                <div class="medication-card collapsed" id="medication-card">
+                    <div class="medication-header">
+                        <i data-lucide="pill-bottle" class="medication-icon"></i>
+                        <div class="medication-content">
+                            <div class="medication-title">Ibuprofen 400mg</div>
+                            <div class="medication-details">
+                                <div class="medication-divider"></div>
+                                <p class="medication-text"><strong>Paracetamol 500mg</strong> as an alternative if needed</p>
+                                <div class="medication-divider"></div>
+                                <p class="medication-text">Take with food, up to 3 times daily as needed</p>
+                                <div class="medication-divider"></div>
+                                <p class="medication-text">Avoid alcohol while taking pain medication</p>
+                                <div class="medication-divider"></div>
+                                <p class="medication-text">Stop medication once pain subsides and consult your GP if symptoms persist</p>
+                                <div class="medication-divider"></div>
+                            </div>
+                        </div>
+                        <div class="medication-toggle">
+                            <i data-lucide="plus" width="24" height="24" stroke-width="2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Employer Resources</div>
+                <div class="resource-card">
+                    <div class="resource-content">
+                        <div class="resource-title">Return to work policy</div>
+                        <div class="resource-subtitle">Guidelines for safe and gradual return to work after injury</div>
+                    </div>
+                    <div class="resource-icon-wrapper">
+                        <i data-lucide="file-text" class="resource-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">When to get help</div>
+                <div class="help-card">
+                    <!-- Emergency Section -->
+                    <div class="help-section-item collapsed">
+                        <div class="help-header-row emergency-row">
+                            <div class="help-icon-badge emergency">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V2.8a.8.8 0 0 1 1.17-.71l11.38 5.69a.8.8 0 0 1 0 1.44L6 15.5"/></svg>
+                            </div>
+                            <div class="help-content">
+                                <div class="help-title large">Call 000 or visit ER</div>
+                            </div>
+                            <div class="help-toggle" data-section="emergency">
+                                <i data-lucide="plus" width="24" height="24" stroke-width="2"></i>
+                            </div>
+                        </div>
+                        <div class="help-details">
+                            <div class="help-divider"></div>
+                            <p class="help-text">If you experience difficulty breathing</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Dizziness or feeling like you are going to pass out or faint</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Develop a fever that is uncontrolled by medication, or any seizure-like activity</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Sudden chest pain</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Severe pain that is unrelieved by medication</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Persistent numbness or loss of sensation in limb/s</p>
+                            <div class="help-divider"></div>
+                            <p class="help-text">Severe swelling</p>
+                            <div class="help-divider"></div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Sonder Section -->
+                    <div class="help-section-item collapsed">
+                        <div class="help-header-row contact-row">
+                            <div class="help-icon-badge contact">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V2.8a.8.8 0 0 1 1.17-.71l11.38 5.69a.8.8 0 0 1 0 1.44L6 15.5"/></svg>
+                            </div>
+                            <div class="help-content">
+                                <div class="help-title">Contact Sonder</div>
+                            </div>
+                            <div class="help-toggle" data-section="contact">
+                                <i data-lucide="plus" width="24" height="24" stroke-width="2"></i>
+                            </div>
+                        </div>
+                        <div class="help-details">
+                            <p class="help-description">If you have any non-life threatening questions about your care, please don't hesitate to reach out.</p>
+                            <div class="help-actions">
+                                <button class="help-action-button">
+                                    <i data-lucide="phone" width="20" height="20" stroke-width="2"></i>
+                                    <span>Call</span>
+                                </button>
+                                <button class="help-action-button">
+                                    <i data-lucide="message-circle-more" width="24" height="24" stroke-width="2"></i>
+                                    <span>Chat</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+    <script>
+        // View more/less toggle for Physio card
+        const physioCard = document.getElementById('physio-card');
+        const viewMoreToggle = document.getElementById('view-more-toggle');
+        viewMoreToggle.addEventListener('click', function() {
+            physioCard.classList.toggle('expanded');
+            const viewMoreText = this.querySelector('.view-more-text');
+            const icon = this.querySelector('i');
+
+            if (physioCard.classList.contains('expanded')) {
+                viewMoreText.textContent = 'View less';
+                icon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                viewMoreText.textContent = 'View more';
+                icon.setAttribute('data-lucide', 'chevron-down');
+            }
+            lucide.createIcons();
+        });
+
+        // Tab switching for Self care
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const view = this.getAttribute('data-view');
+                const summaryList = document.getElementById('self-care-summary');
+                const dayList = document.getElementById('self-care-day');
+                const daySelector = document.querySelector('.day-selector');
+
+                if (view === 'summary') {
+                    summaryList.style.display = 'flex';
+                    dayList.style.display = 'none';
+                    daySelector.style.display = 'none';
+                } else {
+                    summaryList.style.display = 'none';
+                    dayList.style.display = 'flex';
+                    daySelector.style.display = 'flex';
+                }
+            });
+        });
+
+        // Day button switching
+        document.querySelectorAll('.day-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.day-button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Self care checkboxes (Day view)
+        document.querySelectorAll('.self-care-item.day-view').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+        });
+
+        // Medication toggle
+        const medicationCard = document.getElementById('medication-card');
+        const medicationHeader = medicationCard.querySelector('.medication-header');
+        medicationHeader.addEventListener('click', function() {
+            medicationCard.classList.toggle('collapsed');
+            const toggleBtn = this.querySelector('.medication-toggle');
+            const isCollapsed = medicationCard.classList.contains('collapsed');
+
+            // Replace the icon
+            toggleBtn.innerHTML = isCollapsed
+                ? '<i data-lucide="plus" width="24" height="24" stroke-width="2"></i>'
+                : '<i data-lucide="minus" width="24" height="24" stroke-width="2"></i>';
+            lucide.createIcons();
+        });
+
+        // Toggle help sections
+        document.querySelectorAll('.help-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const section = this.closest('.help-section-item');
+                section.classList.toggle('collapsed');
+                const isCollapsed = section.classList.contains('collapsed');
+
+                // Replace the icon
+                this.innerHTML = isCollapsed
+                    ? '<i data-lucide="plus" width="24" height="24" stroke-width="2"></i>'
+                    : '<i data-lucide="minus" width="24" height="24" stroke-width="2"></i>';
+                lucide.createIcons();
+            });
+        });
+    </script>
+</body>
+</html>
