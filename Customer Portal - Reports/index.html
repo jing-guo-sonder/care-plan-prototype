@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Reports — Sonder Customer Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ====================================================================
+       Left sidebar — static. Only "Reports" is active; everything else is
+       visually present but inert (no handlers, no navigation).
+       ==================================================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo-mark" aria-hidden="true">S</span>
+      <span class="sidebar-logo-word">sonder</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Main">
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="home" aria-hidden="true"></i> Home
+      </span>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Insights</span>
+        <span class="nav-new-badge">NEW</span>
+      </div>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="bar-chart-2" aria-hidden="true"></i> Overview
+      </span>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="heart" aria-hidden="true"></i> Wellbeing
+      </span>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="shield" aria-hidden="true"></i> Safety
+      </span>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="heart-handshake" aria-hidden="true"></i> Engagement
+      </span>
+
+      <div class="nav-section">
+        <span class="nav-section-label">Management</span>
+      </div>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="users" aria-hidden="true"></i> Members
+      </span>
+      <span class="nav-item" aria-disabled="true">
+        <i data-lucide="user-cog" aria-hidden="true"></i> Users
+      </span>
+      <span class="nav-item is-active" aria-current="page">
+        <i data-lucide="file-text" aria-hidden="true"></i> Reports
+      </span>
+    </nav>
+
+    <div class="sidebar-footer">Version 1.3.1 (staging)</div>
+  </aside>
+
+  <!-- ====================================================================
+       Main content
+       ==================================================================== -->
+  <main class="main">
+
+    <!-- Top-right bar — both items inert -->
+    <div class="top-bar">
+      <span class="contact-link" aria-disabled="true">
+        <i data-lucide="message-circle" aria-hidden="true"></i> Contact Us
+      </span>
+      <span class="avatar" aria-hidden="true">J</span>
+    </div>
+
+    <h1 class="page-title">Reports</h1>
+    <p class="page-subtitle">Access your organisation's Business Reviews and other reports from Sonder.</p>
+
+    <!-- Toolbar: search + Filters grouped at left, Email notifications at right -->
+    <div class="toolbar">
+      <div class="search-field">
+        <i data-lucide="search" aria-hidden="true"></i>
+        <label class="sr-only" for="search-input">Search reports</label>
+        <input id="search-input" type="search" autocomplete="off"
+               placeholder="Search reports by name, author, or tag">
+      </div>
+
+      <button class="btn btn-outline" id="filters-btn" type="button"
+              aria-expanded="false" aria-controls="filter-panel">
+        <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+        Filters
+        <span class="filter-badge" id="filter-badge" hidden></span>
+        <i data-lucide="chevron-down" class="chevron-rotates" aria-hidden="true"></i>
+      </button>
+
+      <button class="btn btn-outline" id="email-notifications-btn" type="button">
+        <i data-lucide="bell" aria-hidden="true"></i> Email notifications
+      </button>
+    </div>
+
+    <!-- Filter panel — inline, collapsed by default, pushes the table down -->
+    <section class="filter-panel" id="filter-panel" aria-label="Filters">
+      <div class="filter-group">
+        <p class="filter-label" id="tag-filter-label">Report type / tag</p>
+        <div class="chip-row" id="tag-chips" role="group" aria-labelledby="tag-filter-label"></div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="date-preset">Published date range</label>
+        <select class="filter-select" id="date-preset">
+          <option value="all">All time</option>
+          <option value="30">Last 30 days</option>
+          <option value="quarter">Last quarter</option>
+          <option value="12months">Last 12 months</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" id="apply-filters-btn" type="button">Apply filters</button>
+        <button class="btn btn-quiet" id="clear-filters-btn" type="button">Clear</button>
+      </div>
+    </section>
+
+    <!-- Reports table -->
+    <div class="table-card">
+      <div class="table-strip">
+        <span class="table-strip-count" id="row-count"></span>
+        <button class="strip-icon-btn" type="button" tabindex="-1" aria-hidden="true">
+          <i data-lucide="refresh-cw"></i>
+        </button>
+      </div>
+
+      <table class="reports-table">
+        <thead>
+          <tr>
+            <th scope="col">
+              <button class="sort-btn" type="button" data-sort="name">
+                Report name <i data-lucide="chevrons-up-down" aria-hidden="true"></i>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="sort-btn" type="button" data-sort="author">
+                Author <i data-lucide="chevrons-up-down" aria-hidden="true"></i>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="sort-btn" type="button" data-sort="tags">
+                Tags <i data-lucide="chevrons-up-down" aria-hidden="true"></i>
+              </button>
+            </th>
+            <th scope="col">
+              <button class="sort-btn" type="button" data-sort="published">
+                Published at <i data-lucide="chevrons-up-down" aria-hidden="true"></i>
+              </button>
+            </th>
+            <th scope="col" class="th-action"><span class="sr-only">Download</span></th>
+          </tr>
+        </thead>
+        <tbody id="reports-body"></tbody>
+      </table>
+
+      <p class="no-results" id="no-results" hidden>No reports match your search or filters.</p>
+    </div>
+
+  </main>
+</div>
+
+<!-- ======================================================================
+     Report preview modal — one shared placeholder for every report
+     ====================================================================== -->
+<div class="overlay" id="report-overlay">
+  <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="report-modal-title" tabindex="-1">
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title" id="report-modal-title">Report</h2>
+        <p class="modal-meta" id="report-modal-meta"></p>
+      </div>
+      <button class="modal-close" id="report-close-btn" type="button" aria-label="Close">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Placeholder document. Deliberately generic — same preview for every report. -->
+    <div class="report-preview" aria-hidden="true">
+      <div class="report-sheet">
+        <div class="ph-bar ph-title"></div>
+        <div class="ph-bar ph-sub"></div>
+        <div class="ph-stats">
+          <div class="ph-stat"></div>
+          <div class="ph-stat"></div>
+          <div class="ph-stat"></div>
+        </div>
+        <div class="ph-chart">
+          <span style="height: 42%"></span>
+          <span style="height: 68%"></span>
+          <span style="height: 55%"></span>
+          <span style="height: 84%"></span>
+          <span style="height: 61%"></span>
+          <span style="height: 92%"></span>
+          <span style="height: 47%"></span>
+        </div>
+        <div class="ph-bar ph-line"></div>
+        <div class="ph-bar ph-line short"></div>
+        <div class="ph-bar ph-line"></div>
+        <div class="ph-cols">
+          <div class="ph-block"></div>
+          <div class="ph-block"></div>
+        </div>
+      </div>
+      <p class="report-preview-note">Preview placeholder — the published report renders here.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-quiet" id="report-dismiss-btn" type="button">Close</button>
+      <button class="btn btn-primary" id="report-download-btn" type="button">
+        <i data-lucide="download" aria-hidden="true"></i> Download
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================================
+     Email notifications modal — choose which report types to be emailed
+     ====================================================================== -->
+<div class="overlay" id="email-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="email-modal-title" tabindex="-1">
+    <div class="modal-header">
+      <h2 class="modal-title" id="email-modal-title">Email notifications for new reports</h2>
+      <button class="modal-close" id="modal-close-btn" type="button" aria-label="Close">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <p class="modal-intro">Get an email whenever a new report is published for Northwind Group. The email includes a link straight to your Reports page.</p>
+
+    <h3 class="modal-section-title">Report types</h3>
+    <ul class="pref-list" id="report-pref-list"></ul>
+
+    <p class="helper-text">You can unsubscribe at any time from the link in the email.</p>
+
+    <div class="modal-footer">
+      <button class="btn btn-quiet" id="cancel-notifications-btn" type="button">Cancel</button>
+      <button class="btn btn-primary" id="save-notifications-btn" type="button">Save notifications</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+<script src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
